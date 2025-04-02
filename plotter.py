@@ -1,0 +1,21 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+d1 = np.load('/mnt/extraspace/damonge/SO_UK/BBSims/outputs/summary_gaussian_Alens0p3_base_opt_years.npz')
+d2 = np.load('/mnt/extraspace/damonge/SO_UK/BBSims/outputs/summary_gaussian_Alens0p3_base_pess_years.npz')
+d1m = np.load('/mnt/extraspace/damonge/SO_UK/BBSims/outputs/summary_gaussian_Alens0p3_base_opt_wmom_years.npz')
+d2m = np.load('/mnt/extraspace/damonge/SO_UK/BBSims/outputs/summary_gaussian_Alens0p3_base_pess_wmom_years.npz')
+nyears = len(d1['years'])
+plt.figure()
+ax = plt.gca()
+ax.fill_between(np.arange(nyears), d1['p_sigma'][:, 1], d2m['p_sigma'][:, 1], facecolor='b', alpha=0.5)
+ax.plot(np.arange(nyears), d2m['p_sigma'][:, 1], 'k-', label='Bad noise, w. decorr.')
+ax.plot(np.arange(nyears), d2['p_sigma'][:, 1], 'k-.', label='Bad noise, no decorr.')
+ax.plot(np.arange(nyears), d1m['p_sigma'][:, 1], 'k--', label='Good noise, w. decorr.')
+ax.plot(np.arange(nyears), d1['p_sigma'][:, 1], 'k:', label='Good noise, no decorr.')
+ax.set_xticks(np.arange(nyears))
+ax.set_xticklabels(d1['years'])
+ax.set_yscale('log')
+ax.legend()
+ax.set_ylabel(r'$\sigma(r)$', fontsize=18)
+plt.show()
